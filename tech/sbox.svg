@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-label="s&amp;box">
+  <defs>
+    <linearGradient id="sboxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D2FF"/>
+      <stop offset="50%" stop-color="#3A7BD5"/>
+      <stop offset="100%" stop-color="#8E2DE2"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="4" width="116" height="40" rx="8" fill="none" stroke="url(#sboxGrad)" stroke-width="2.5"/>
+  <text x="60" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">s&amp;box</text>
+</svg>

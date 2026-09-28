@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Vertex Games — 2D, 3D, and VR/AR game development studio. You Imagine. We Create." />
+  <title>Vertex Games — You Imagine. We Create.</title>
+  <link rel="icon" href="logo.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="chatstyle.css" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #000000;
+      --bg-alt: #0b0c10;
+      --cyan: #00d2ff;
+      --blue: #3a7bd5;
+      --purple: #8e2de2;
+      --gradient: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 50%, var(--purple) 100%);
+      --gradient-h: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 45%, var(--purple) 100%);
+      --text: #ffffff;
+      --text-muted: #b0b0c8;
+      --border: rgba(255, 255, 255, 0.1);
+      --glow-cyan: rgba(0, 210, 255, 0.25);
+      --glow-purple: rgba(142, 45, 226, 0.2);
+      --success: #00ff88;
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Subtle geometric background */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, var(--glow-cyan), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 70%, var(--glow-purple), transparent 50%);
+      opacity: 0.5;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand img {
+      height: 44px;
+      width: auto;
+      filter: drop-shadow(0 0 12px var(--glow-cyan));
+    }
+
+    .brand span {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: 900px;
+      animation: fadeUp 0.9s ease-out;
+    }
+
+    .hero-logo {
+      width: min(140px, 28vw);
+      margin: 0 auto 1.5rem;
+      filter: drop-shadow(0 0 24px var(--glow-cyan)) drop-shadow(0 0 40px var(--glow-purple));
+    }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      background: var(--gradient-h);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 2rem;
+      font-weight: 500;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.95rem 2.5rem;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #000;
+      background: var(--gradient);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 32px var(--glow-cyan), 0 4px 20px var(--glow-purple);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px var(--glow-cyan), 0 8px 28px var(--glow-purple);
+    }
+
+    /* Services */
+    .services {
+      padding: 5rem 2rem;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-head p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 500;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .service-card {
+      position: relative;
+      padding: 2rem;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: var(--gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.35;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 40px var(--glow-cyan);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    .service-card h3 span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .service-card > p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+
+    .service-card ul {
+      list-style: none;
+    }
+
+    .service-card li {
+      position: relative;
+      padding: 0.4rem 0 0.4rem 1.25rem;
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .service-card li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+    }
+
+    /* Portfolio — dual sliders (top RTL, bottom LTR) */
+    .portfolio {
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+
+    .portfolio .section-head {
+      padding: 0 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .portfolio-sliders {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .slider-wrap {
+      position: relative;
+      width: 100%;
+      mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+    }
+
+    .slider-track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      gap: 1.25rem;
+    }
+
+    .slider-track--rtl {
+      animation: scroll-rtl var(--scroll-duration, 40s) linear infinite;
+    }
+
+    .slider-track--ltr {
+      animation: scroll-ltr var(--scroll-duration, 40s) linear infinite;
+    }
+
+    .slider-wrap:hover .slider-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll-rtl {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-1 * var(--scroll-distance, 50%))); }
+    }
+
+    @keyframes scroll-ltr {
+      0% { transform: translateX(calc(-1 * var(--scroll-distance, 50%))); }
+      100% { transform: translateX(0); }
+    }
+
+    .slide {
+      flex: 0 0 auto;
+      width: min(380px, 78vw);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-alt);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 24px var(--glow-cyan);
+    }
+
+    .slide img,
+    .slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .slide:hover img {
+      transform: scale(1.05);
+    }
+
+    .slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    .slide-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.25rem;
+      z-index: 1;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--gradient-h);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Core tech & engines */
+    .tech {
+      padding: 5rem 0;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .tech .section-head {
+      padding: 0 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tech-sliders {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .tech-row-label {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0 2rem;
+    }
+
+    .tech-card {
+      flex: 0 0 auto;
+      width: 220px;
+      padding: 1.75rem 1.5rem;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      min-height: 160px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .tech-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: var(--gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.25;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 210, 255, 0.35);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 28px var(--glow-cyan);
+    }
+
+    .tech-card:hover::before {
+      opacity: 0.85;
+    }
+
+    .tech-card__logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      width: 100%;
+    }
+
+    .tech-card__logo img {
+      height: 52px;
+      width: auto;
+      max-width: 150px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .tech-card__logo img.tech-logo--brand {
+      filter: none;
+      opacity: 1;
+      height: 44px;
+    }
+
+    .tech-card:hover .tech-card__logo img {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    .tech-card__name {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--text-muted);
+      transition: color 0.3s ease;
+    }
+
+    .tech-card:hover .tech-card__name {
+      background: var(--gradient-h);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Publish platforms */
+    .publish {
+      padding: 5rem 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .publish .section-head {
+      padding: 0 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Contact */
+    .contact {
+      padding: 5rem 2rem;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-box {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .contact-intro {
+      text-align: center;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.06), rgba(142, 45, 226, 0.06));
+    }
+
+    .contact-intro p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .contact-intro strong {
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 1.35rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%2300d2ff' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .form-group select option {
+      background: #0b0c10;
+      color: var(--text);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.12);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 0.5rem;
+      border: none;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-message {
+      display: none;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .status-message.visible {
+      display: block;
+    }
+
+    .status-message.success {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .status-message.error {
+      background: rgba(255, 68, 68, 0.1);
+      border: 1px solid #ff4444;
+      color: #ff6b6b;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    footer .gradient-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+    }
+
+    #contact.is-page-focus,
+    #proposal-form.is-page-focus {
+      outline: 2px solid rgba(0, 210, 255, 0.55);
+      outline-offset: 4px;
+      border-radius: 12px;
+      transition: outline-color 0.3s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0.875rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .nav-links {
+        gap: 1.25rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 2.5rem 1rem 3rem;
+      }
+
+      .services,
+      .tech,
+      .publish,
+      .contact {
+        padding: 3.5rem 1rem;
+      }
+
+      .slide {
+        width: 260px;
+      }
+
+      .tech-card {
+        width: 190px;
+        min-height: 140px;
+        padding: 1.25rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header>
+    <nav>
+      <a href="#hero" class="brand">
+        <img src="logo.png" alt="Vertex Games logo" width="44" height="44" />
+        <span>Vertex Games</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#tech">Tech</a></li>
+        <li><a href="#publish">Publish</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+        <img class="hero-logo" src="logo.png" alt="" width="140" height="140" />
+        <p class="hero-tagline">You Imagine. We Create.</p>
+        <h1>Turn Your Vision Into <span class="gradient-text">Playable Worlds</span></h1>
+        <p>
+          Vertex Games is a game development studio specializing in 2D, 3D, and VR/AR experiences.
+          We help businesses and creators turn ideas into engaging, scalable, and high-quality interactive products.
+        </p>
+        <a href="#contact" class="btn">Start Your Project</a>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="gradient-text">Our Services</h2>
+          <p>End-to-end game development across platforms—from prototype to polished release.</p>
+        </div>
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">🎮</div>
+            <h3><span>2D Game Development</span></h3>
+            <p>Mobile, web, and desktop 2D titles built for clarity, charm, and retention.</p>
+            <ul>
+              <li>Character &amp; environment art</li>
+              <li>Animation &amp; UI/UX for games</li>
+              <li>Cross-platform builds</li>
+              <li>Live ops &amp; updates</li>
+            </ul>
+          </article>
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">🌐</div>
+            <h3><span>3D Game Development</span></h3>
+            <p>Real-time 3D worlds, characters, and systems optimized for your target hardware.</p>
+            <ul>
+              <li>Environments &amp; level design</li>
+              <li>Gameplay &amp; multiplayer systems</li>
+              <li>Performance tuning</li>
+              <li>PC, console &amp; mobile ports</li>
+            </ul>
+          </article>
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">🥽</div>
+            <h3><span>VR / AR Experiences</span></h3>
+            <p>Immersive training, showcases, and location-based experiences with comfort-first design.</p>
+            <ul>
+              <li>Headset &amp; hand-tracking UX</li>
+              <li>AR filters &amp; spatial apps</li>
+              <li>Enterprise &amp; brand activations</li>
+              <li>Prototype to deployment</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="tech" id="tech" aria-label="Core technologies and game engines">
+      <div class="section-head container">
+        <h2 class="gradient-text">Core Tech &amp; Engines</h2>
+        <p>Industry-leading game engines and VR/AR platforms—we pick the right stack for your project.</p>
+      </div>
+
+      <div class="tech-sliders">
+        <p class="tech-row-label">Game Engines</p>
+        <div class="slider-wrap">
+          <div class="slider-track slider-track--rtl" data-duplicate-slider>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/unity.svg" alt="Unity Engine logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Unity Engine</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/unreal.svg" alt="Unreal Engine logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Unreal Engine</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/sbox.svg" alt="S&amp;Box Editor logo" class="tech-logo--brand" width="120" height="44" loading="lazy" />
+              </div>
+              <p class="tech-card__name">S&amp;Box Editor</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/godot.svg" alt="Godot Engine logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Godot Engine</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/roblox.svg" alt="Roblox logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Roblox</p>
+            </article>
+          </div>
+        </div>
+
+        <p class="tech-row-label">VR / AR Platforms</p>
+        <div class="slider-wrap">
+          <div class="slider-track slider-track--ltr" data-duplicate-slider>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/arcore.svg" alt="ARCore logo" class="tech-logo--brand" width="120" height="44" loading="lazy" />
+              </div>
+              <p class="tech-card__name">ARCore</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/arkit.svg" alt="ARKit logo" class="tech-logo--brand" width="120" height="44" loading="lazy" />
+              </div>
+              <p class="tech-card__name">ARKit</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/meta-quest.svg" alt="Meta Quest logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Meta Quest</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/htc-vive.svg" alt="HTC Vive logo" class="tech-logo--brand" width="140" height="44" loading="lazy" />
+              </div>
+              <p class="tech-card__name">HTC Vive</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/valve.svg" alt="Valve SteamVR logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Valve / SteamVR</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/openxr.svg" alt="OpenXR logo" class="tech-logo--brand" width="120" height="48" loading="lazy" />
+              </div>
+              <p class="tech-card__name">OpenXR</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="tech/hololens.svg" alt="Microsoft HoloLens logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">HoloLens</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="publish" id="publish" aria-label="App and game publishing platforms">
+      <div class="section-head container">
+        <h2 class="gradient-text">Publish On</h2>
+        <p>We ship your games and apps to the stores and platforms your audience already uses.</p>
+      </div>
+
+      <div class="tech-sliders">
+        <p class="tech-row-label">Stores &amp; Platforms</p>
+        <div class="slider-wrap">
+          <div class="slider-track slider-track--rtl" data-duplicate-slider>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="publish/googleplay.svg" alt="Google Play Store logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Google Play</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="publish/appstore.svg" alt="Apple App Store logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">App Store</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="publish/steam.svg" alt="Steam logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Steam</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="publish/epicgames.svg" alt="Epic Games Store logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Epic Games Store</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="publish/itchdotio.svg" alt="itch.io logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">itch.io</p>
+            </article>
+            <article class="tech-card">
+              <div class="tech-card__logo">
+                <img src="publish/meta.svg" alt="Meta Quest Store logo" width="120" height="52" loading="lazy" />
+              </div>
+              <p class="tech-card__name">Meta Quest Store</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="portfolio" id="portfolio" aria-label="Portfolio showcase">
+      <div class="section-head container">
+        <h2 class="gradient-text">Our Work</h2>
+        <p>Gameplay captures from our 2D, 3D, and VR/AR projects.</p>
+      </div>
+
+      <div class="portfolio-sliders">
+        <!-- Top row: scrolls right → left -->
+        <div class="slider-wrap" aria-hidden="false">
+          <div class="slider-track slider-track--rtl" data-duplicate-slider>
+            <figure class="slide">
+              <img src="portfolio/10.gif" alt="Stylized 3D adventure world" loading="lazy" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/1.gif" alt="3D game capture" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/2.gif" alt="3D environment" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/3.gif" alt="VR experience" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/4.gif" alt="Interactive 3D product" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+          </div>
+        </div>
+
+        <!-- Bottom row: scrolls left → right -->
+        <div class="slider-wrap">
+          <div class="slider-track slider-track--ltr" data-duplicate-slider>
+            <figure class="slide">
+              <img src="portfolio/5.gif" alt="2D game capture" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/6.gif" alt="Character art" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/7.gif" alt="Stylized game world" loading="lazy" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/8.gif" alt="Multiplayer gameplay" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+            <figure class="slide">
+              <img src="portfolio/9.gif" alt="Mobile game" loading="lazy" onerror="this.src='portfolio/sample-3d.png'" />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-box">
+        <div class="section-head">
+          <h2 class="gradient-text">Contact Us</h2>
+          <p>Share your game or interactive project—we’ll explore how to build it together.</p>
+        </div>
+
+        <div class="contact-intro">
+          <p><strong>Have a game idea?</strong> Tell us about your concept, target platforms, and timeline. We partner with businesses and creators alike.</p>
+        </div>
+
+        <div id="status-message" class="status-message" role="alert"></div>
+
+        <form id="proposal-form">
+          <div class="form-group">
+            <label for="FullName">Full Name</label>
+            <input type="text" id="FullName" name="FullName" required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label for="Email">Email Address</label>
+            <input type="email" id="Email" name="Email" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="Project">Project Type</label>
+            <select name="Project" id="Project" required>
+              <option value="">Select project type</option>
+              <option value="2D Game">2D Game</option>
+              <option value="3D Game">3D Game</option>
+              <option value="VR/AR Experience">VR/AR Experience</option>
+              <option value="Prototype / MVP">Prototype / MVP</option>
+              <option value="Full-Cycle Development">Full-Cycle Development</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="project-description">Project Details</label>
+            <textarea id="project-description" name="Description" required placeholder="Describe your game idea, platforms, scope, and timeline..."></textarea>
+          </div>
+          <button type="submit" class="btn submit-btn" id="submit-btn">Send Project Inquiry</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="gradient-text">YOU IMAGINE. WE CREATE.</p>
+    <p style="margin-top: 0.75rem;">Vertex Games · Tanger, Morocco</p>
+    <p style="margin-top: 0.5rem;">&copy; <span id="year"></span> Vertex Games. All rights reserved.</p>
+  </footer>
+
+  <div
+    class="sv-chat"
+    data-sv-chat
+    data-api="https://vertex.moerziki.workers.dev/"
+    data-api-key="s4i52m38o8x6ve4r5e98xga7m6es85ap4p"
+  >
+    <button
+      class="sv-chat__launcher"
+      type="button"
+      aria-label="Open Vertex Games chat — Ask me"
+      aria-expanded="false"
+      data-sv-chat-fab
+    >
+      <span class="sv-chat__teaser" aria-hidden="true">Ask me!</span>
+      <span class="sv-chat__fab">
+        <img class="sv-chat__fab-logo" src="logo.png" alt="" width="34" height="34" />
+      </span>
+    </button>
+
+    <section class="sv-chat__panel" aria-label="Vertex Games chat" aria-hidden="true" data-sv-chat-panel>
+      <header class="sv-chat__header">
+        <div class="sv-chat__brand">
+          <img src="logo.png" alt="" width="28" height="28" aria-hidden="true" />
+          <div style="min-width:0;">
+            <b>Vertex Games</b>
+            <span>Services, process &amp; proposals</span>
+          </div>
+        </div>
+        <button class="sv-chat__close" type="button" aria-label="Close chat" data-sv-chat-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 7l10 10M17 7L7 17" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="sv-chat__body">
+        <div class="sv-chat__messages" data-sv-chat-messages></div>
+        <div class="sv-chat__typing" data-sv-chat-typing hidden></div>
+        <div class="sv-chat__composer">
+          <input class="sv-chat__input" type="text" autocomplete="off" placeholder="Ask about 2D/3D games, VR/AR, process…" data-sv-chat-input />
+          <button class="sv-chat__send" type="button" data-sv-chat-send>Send</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+  /** Seamless marquee: fill viewport, duplicate half, scroll by exact pixel width */
+    function initInfiniteSliders() {
+      document.querySelectorAll('[data-duplicate-slider]').forEach(function (track) {
+        var wrap = track.parentElement;
+        if (!wrap) return;
+
+        if (!track.dataset.sliderTemplate) {
+          track.dataset.sliderTemplate = track.innerHTML;
+        }
+
+        var temp = document.createElement('div');
+        temp.innerHTML = track.dataset.sliderTemplate;
+        var templates = Array.from(temp.children);
+        if (!templates.length) return;
+
+        track.innerHTML = '';
+        track.style.removeProperty('--scroll-distance');
+        track.style.removeProperty('--scroll-duration');
+
+        function appendSet() {
+          templates.forEach(function (tpl) {
+            track.appendChild(tpl.cloneNode(true));
+          });
+        }
+
+        appendSet();
+        var halfWidth = track.scrollWidth;
+        var minHalf = Math.max(wrap.offsetWidth, window.innerWidth);
+
+        while (halfWidth < minHalf) {
+          appendSet();
+          halfWidth = track.scrollWidth;
+        }
+
+        var distance = halfWidth;
+        Array.from(track.children).forEach(function (node) {
+          track.appendChild(node.cloneNode(true));
+        });
+
+        track.style.setProperty('--scroll-distance', distance + 'px');
+        track.style.setProperty('--scroll-duration', Math.max(25, distance / 45) + 's');
+      });
+    }
+
+    var sliderResizeTimer;
+    function scheduleSliderInit() {
+      clearTimeout(sliderResizeTimer);
+      sliderResizeTimer = setTimeout(initInfiniteSliders, 150);
+    }
+
+    initInfiniteSliders();
+    window.addEventListener('resize', scheduleSliderInit);
+    window.addEventListener('load', initInfiniteSliders);
+  </script>
+  <script src="vertex-page.js" defer></script>
+  <script src="chatscript.js" defer></script>
+</body>
+</html>

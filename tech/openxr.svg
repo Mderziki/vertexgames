@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-label="OpenXR">
+  <rect x="8" y="12" width="28" height="24" rx="4" fill="none" stroke="#00D2FF" stroke-width="2"/>
+  <rect x="84" y="12" width="28" height="24" rx="4" fill="none" stroke="#8E2DE2" stroke-width="2"/>
+  <path d="M36 24h48" stroke="url(#oxGrad)" stroke-width="2" stroke-dasharray="4 3"/>
+  <defs>
+    <linearGradient id="oxGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D2FF"/>
+      <stop offset="100%" stop-color="#8E2DE2"/>
+    </linearGradient>
+  </defs>
+  <text x="60" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff" letter-spacing="0.08em">OpenXR</text>
+</svg>

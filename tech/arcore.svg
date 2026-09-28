@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-label="ARCore">
+  <defs>
+    <linearGradient id="arcoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D2FF"/>
+      <stop offset="100%" stop-color="#8E2DE2"/>
+    </linearGradient>
+  </defs>
+  <text x="60" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="url(#arcoreGrad)">ARCore</text>
+</svg>
